@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres-security:
+    image: postgres:16
+    container_name: pg-security
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: securitydb
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_sec:/var/lib/postgresql/data
+      - ./ssl:/var/lib/postgresql/ssl
+      - ./init:/docker-entrypoint-initdb.d
+    command: >
+      postgres
+        -c shared_preload_libraries='pgaudit'
+        -c pgaudit.log='all'
+        -c pgaudit.log_catalog=off
+        -c pgaudit.log_parameter=on
+        -c log_statement='all'
+        -c log_connections=on
+        -c log_disconnections=on
+        -c password_encryption=scram-sha-256
+    restart: unless-stopped
+
+volumes:
+  pgdata_sec:
