@@ -9,17 +9,17 @@ services:
       POSTGRES_PASSWORD: admin123
       POSTGRES_DB: securitydb
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - pgdata_sec:/var/lib/postgresql/data
       - ./ssl:/var/lib/postgresql/ssl
       - ./init:/docker-entrypoint-initdb.d
     command: >
       postgres
-        -c shared_preload_libraries='pgaudit'
-        -c pgaudit.log='all'
-        -c pgaudit.log_catalog=off
-        -c pgaudit.log_parameter=on
+        
+        
+        
+        
         -c log_statement='all'
         -c log_connections=on
         -c log_disconnections=on
